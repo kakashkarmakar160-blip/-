@@ -27,21 +27,21 @@
    const normName=v=>clean(v).toLocaleLowerCase('bn');
    const normId=v=>clean(v).toLocaleLowerCase('en');
    const enteredName=normName(name), enteredId=normId(id), enteredPassword=String(password??'');
-   const matches=x=>normId(x.id)===enteredId && normName(x.name)===enteredName && String(x.password??'')===enteredPassword && x.active!==false;
-   let m=state.members.find(matches);
-   /* Migrate old browser demo data only after all three demo credentials match. */
-   if(!m){
-     const demo=defaults.members.find(matches);
-     if(demo){
-       let existing=state.members.find(x=>normName(x.name)===normName(demo.name)||normId(x.id)===normId(demo.id));
-       if(existing){Object.assign(existing,clone(demo));m=existing;}
-       else{m=clone(demo);state.members.push(m);}
+   const samePerson=x=>normId(x.id)===enteredId && normName(x.name)===enteredName;
+   let member=state.members.find(samePerson);
+   if(!member){
+     const bundled=defaults.members.find(samePerson);
+     if(bundled){
+       const old=state.members.find(x=>normId(x.id)===enteredId || normName(x.name)===enteredName);
+       if(old){Object.assign(old,clone(bundled));member=old;}
+       else{member=clone(bundled);state.members.push(member);}
        save();
      }
    }
-   if(!m)return {ok:false,message:'নাম, সদস্য ID অথবা পাসওয়ার্ড মিলছে না, অথবা অ্যাকাউন্ট নিষ্ক্রিয়। নাম, ID ও পাসওয়ার্ড ঠিকভাবে লিখে আবার চেষ্টা করুন।'};
-   if(m.active===false)return {ok:false,message:'এই সদস্য অ্যাকাউন্টটি নিষ্ক্রিয়। অ্যাডমিনের সঙ্গে যোগাযোগ করুন।'};
-   setSession(m);return {ok:true,member:m};
+   if(!member)return {ok:false,code:'NO_DATA',message:'no find any data — এই নাম ও সদস্য ID-র সঙ্গে কোনো তথ্য মেলেনি।'};
+   if(member.active===false)return {ok:false,code:'INACTIVE',message:'এই সদস্য অ্যাকাউন্টটি নিষ্ক্রিয়। অ্যাডমিনের সঙ্গে যোগাযোগ করুন।'};
+   if(String(member.password??'')!==enteredPassword)return {ok:false,code:'WRONG_PASSWORD',message:'password is wrong — পাসওয়ার্ড ভুল হয়েছে। আবার চেষ্টা করুন।'};
+   setSession(member);return {ok:true,member};
  }
  function initials(name){return (name||'?').trim().split(/\s+/).slice(0,2).map(x=>x[0]||'').join('')}
  function avatar(m,sizeClass='avatar'){if(m&&m.photo)return `<img class="${sizeClass}" src="${esc(m.photo)}" alt="${esc(m.name)}">`;return `<span class="${sizeClass}">${esc(initials(m&&m.name))}</span>`}
