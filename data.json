@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "settings": {
+    "siteName": "দুর্গা সমিতি",
+    "motto": "ঐক্য, সেবা ও শক্তির বন্ধনে",
+    "theme": "cream",
+    "logo": "assets/durga-samiti-logo.png",
+    "footer": "© দুর্গা সমিতি",
+    "chatName": "দুর্গা সমিতি — গ্রুপ চ্যাট",
+    "settingsPassword": "AK@2026#",
+    "customFields": []
+  },
+  "members": [
+    {
+      "id": "DUR@900",
+      "name": "আকাশ কর্মকার",
+      "role": "অ্যাডমিন",
+      "active": true,
+      "birthday": "",
+      "address": "",
+      "phone": "",
+      "contribution": 0,
+      "photo": "",
+      "password": "password",
+      "isAdmin": true
+    },
+    {
+      "id": "DUR002",
+      "name": "সায়ন কোলে",
+      "role": "সদস্য",
+      "active": true,
+      "birthday": "",
+      "address": "",
+      "phone": "",
+      "contribution": 0,
+      "photo": "",
+      "password": "Durga@1002",
+      "isAdmin": false
+    },
+    {
+      "id": "DUR003",
+      "name": "সস্তিক কর্মকার",
+      "role": "সদস্য",
+      "active": true,
+      "birthday": "",
+      "address": "",
+      "phone": "",
+      "contribution": 0,
+      "photo": "",
+      "password": "Durga@1003",
+      "isAdmin": false
+    },
+    {
+      "id": "DUR004",
+      "name": "হমাংস মালিক",
+      "role": "সদস্য",
+      "active": true,
+      "birthday": "",
+      "address": "",
+      "phone": "",
+      "contribution": 0,
+      "photo": "",
+      "password": "Durga@1004",
+      "isAdmin": false
+    },
+    {
+      "id": "DUR005",
+      "name": "অরিত্র মালিক",
+      "role": "সদস্য",
+      "active": true,
+      "birthday": "",
+      "address": "",
+      "phone": "",
+      "contribution": 0,
+      "photo": "",
+      "password": "Durga@1005",
+      "isAdmin": false
+    }
+  ],
+  "gallery": [],
+  "messages": [
+    {
+      "id": "msg1",
+      "memberId": "DUR@900",
+      "name": "আকাশ কর্মকার",
+      "text": "সবাইকে দুর্গা সমিতির পক্ষ থেকে স্বাগতম।",
+      "time": "2026-10-23T09:00:00.000Z"
+    }
+  ],
+  "transactions": [
+    {
+      "id": "tx1",
+      "year": 2026,
+      "date": "2026-10-01",
+      "type": "contribution",
+      "direction": "income",
+      "amount": 0,
+      "payer": "সদস্যদের চাঁদা",
+      "item": "প্রাথমিক নমুনা রেকর্ড",
+      "description": "প্রকৃত হিসাব যোগ করার পরিমাণ ০ রাখা হয়েছে",
+      "responsible": "আকাশ কর্মকার",
+      "comment": "নমুনা"
+    }
+  ],
+  "financialYears": [
+    2025,
+    2026,
+    2027
+  ]
+}
