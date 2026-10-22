@@ -22,7 +22,27 @@
  function isAdmin(){const m=currentMember();return !!(m&&m.isAdmin&&m.active)}
  function requireLogin(){if(!currentMember()){location.href='Index.html';return false}return true}
  function requireAdmin(){if(!requireLogin())return false;if(!isAdmin()){alert('এই সুবিধাটি শুধু অ্যাডমিন ব্যবহার করতে পারবেন।');location.href='Dashboard.html';return false}return true}
- function login(name,id,password){const m=state.members.find(x=>x.id.toLowerCase()===id.trim().toLowerCase()&&x.name.trim().toLowerCase()===name.trim().toLowerCase()&&x.password===password&&x.active);if(!m)return {ok:false,message:'তথ্য মিলছে না অথবা অ্যাকাউন্ট নিষ্ক্রিয়। নাম, সদস্য ID ও পাসওয়ার্ড আবার পরীক্ষা করুন।'};setSession(m);return {ok:true,member:m}}
+ function login(name,id,password){
+   const clean=v=>String(v??'').normalize('NFC').trim().replace(/\s+/g,' ');
+   const normName=v=>clean(v).toLocaleLowerCase('bn');
+   const normId=v=>clean(v).toLocaleLowerCase('en');
+   const enteredName=normName(name), enteredId=normId(id), enteredPassword=String(password??'');
+   const matches=x=>normId(x.id)===enteredId && normName(x.name)===enteredName && String(x.password??'')===enteredPassword && x.active!==false;
+   let m=state.members.find(matches);
+   /* Migrate old browser demo data only after all three demo credentials match. */
+   if(!m){
+     const demo=defaults.members.find(matches);
+     if(demo){
+       let existing=state.members.find(x=>normName(x.name)===normName(demo.name)||normId(x.id)===normId(demo.id));
+       if(existing){Object.assign(existing,clone(demo));m=existing;}
+       else{m=clone(demo);state.members.push(m);}
+       save();
+     }
+   }
+   if(!m)return {ok:false,message:'নাম, সদস্য ID অথবা পাসওয়ার্ড মিলছে না, অথবা অ্যাকাউন্ট নিষ্ক্রিয়। নাম, ID ও পাসওয়ার্ড ঠিকভাবে লিখে আবার চেষ্টা করুন।'};
+   if(m.active===false)return {ok:false,message:'এই সদস্য অ্যাকাউন্টটি নিষ্ক্রিয়। অ্যাডমিনের সঙ্গে যোগাযোগ করুন।'};
+   setSession(m);return {ok:true,member:m};
+ }
  function initials(name){return (name||'?').trim().split(/\s+/).slice(0,2).map(x=>x[0]||'').join('')}
  function avatar(m,sizeClass='avatar'){if(m&&m.photo)return `<img class="${sizeClass}" src="${esc(m.photo)}" alt="${esc(m.name)}">`;return `<span class="${sizeClass}">${esc(initials(m&&m.name))}</span>`}
  function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
